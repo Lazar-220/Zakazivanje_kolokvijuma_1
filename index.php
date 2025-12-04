@@ -1,3 +1,32 @@
+<?php
+    require "dbBroker.php";
+    require "model/user.php";
+
+    session_start();
+
+    if(isset($_POST['username']) && isset($_POST['password'])){
+        $uname=$_POST['username'];
+        $upass=$_POST['password'];
+
+        // $conn=new mysqli('localhost','root','','kolokvijumi');
+
+        $korisnik=new User(null,$uname,$upass);
+
+        $odg=User::logInUser($korisnik,$conn);
+
+        if($odg){
+
+            $_SESSION['user_id']=$odg->id;       //$_SESSION['user_id']=$korisnik->id;   //radilo bi i ovo jer se promenljiva $korisnik promenila u metodi logInUser a oni su ista promenljiva, ne kopije
+            header('Location: home.php');
+            exit();
+        }else {
+            echo "Neuspesno logovanje";
+        }
+    }
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 

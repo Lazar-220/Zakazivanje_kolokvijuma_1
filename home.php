@@ -1,3 +1,27 @@
+<?php
+    require "dbBroker.php";
+// session_start();
+
+// // 1. Konekcija na bazu
+// $conn = new mysqli("localhost", "root", "", "kolokvijumi");
+
+// if ($conn->connect_error) {
+//     die("Greška u konekciji: " . $conn->connect_error);
+// }
+
+// // 2. SELECT upit
+// $sql = "SELECT * FROM prijave";
+// $result = $conn->query($sql);
+
+// // Ako ima greška u SQL-u
+// if (!$result) {
+//     die("SQL greška: " . $conn->error);
+// }
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,7 +67,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($red = $result->fetch_array()) { ?>
+                            <!-- <?php var_dump($result);
+                            echo $conn->error;
+                            ?> -->
+                            <?php 
+                             while ($red = $result->fetch_array()) { ?>
                                 <tr>
                                     <td><?php echo $red["predmet"] ?></td>
                                     <td><?php echo $red["katedra"] ?></td>
@@ -57,7 +85,7 @@
                                     </td>
                                 </tr>
                             <?php } ?>
-                            ?>
+                            <!-- ?> -->
                             <tr>
                                 <td colspan="5" class="text-center">Nema unetih kolokvijuma</td>
                             </tr>
