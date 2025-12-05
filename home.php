@@ -1,22 +1,26 @@
 <?php
     require "dbBroker.php";
-// session_start();
+    require "model/prijava.php";
 
-// // 1. Konekcija na bazu
-// $conn = new mysqli("localhost", "root", "", "kolokvijumi");
+    session_start();
 
-// if ($conn->connect_error) {
-//     die("Greška u konekciji: " . $conn->connect_error);
-// }
+    if(!isset($_SESSION['user_id'])){
+        header("Location: index.php");
+        exit();
+    }
 
-// // 2. SELECT upit
-// $sql = "SELECT * FROM prijave";
-// $result = $conn->query($sql);
+    $rezultat=Prijava::getAll($conn);                            //$conn iz dbBroker.php-a
 
-// // Ako ima greška u SQL-u
-// if (!$result) {
-//     die("SQL greška: " . $conn->error);
-// }
+    if(!$rezultat){
+        echo "Nastala greska prilikom izvrsavanja upita <br>";
+        die();                                                         // kao exit() prekida sesiju i nista nakon te linije se ne izvrsava
+    }
+
+    if($rezultat->num_rows===0){
+        echo "Nema prijavljenih kolokvijuma";
+        die();  
+    }
+
 ?>
 
 
@@ -67,11 +71,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- <?php var_dump($result);
-                            echo $conn->error;
-                            ?> -->
+
                             <?php 
-                             while ($red = $result->fetch_array()) { ?>
+                             while ($red = $rezultat->fetch_array()) { ?>
                                 <tr>
                                     <td><?php echo $red["predmet"] ?></td>
                                     <td><?php echo $red["katedra"] ?></td>
@@ -85,7 +87,6 @@
                                     </td>
                                 </tr>
                             <?php } ?>
-                            <!-- ?> -->
                             <tr>
                                 <td colspan="5" class="text-center">Nema unetih kolokvijuma</td>
                             </tr>
@@ -176,6 +177,7 @@
     <!-- Bootstrap and jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
 
     <script>
         // Omogućavanje dugmadi kada je selektovan radio button
