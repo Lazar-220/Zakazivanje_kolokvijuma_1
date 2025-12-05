@@ -28,7 +28,7 @@
 
         public static function deleteById(mysqli $conn,$id){
 
-            $sql="DELETE FROM prijave WHERE id=$id";                    //id=$this->id
+            $sql="DELETE FROM prijave WHERE id=$id";       //id=$id;                    //id=$this->id
             return $conn->query($sql);
         }
 
@@ -41,7 +41,7 @@
 
         public static function update(mysqli $conn, Prijava $prijava){
 
-            $sql="UPDATE prijave SET predmet=$prijava->predmet, katedra=$prijava->katedra, sala=$prijava->sala, datum=$prijava->datum WHERE id=$prijava->id";
+            $sql="UPDATE prijave SET predmet='$prijava->predmet', katedra='$prijava->katedra', sala='$prijava->sala', datum='$prijava->datum' WHERE id=$prijava->id";
 
             return $conn->query($sql);
         }

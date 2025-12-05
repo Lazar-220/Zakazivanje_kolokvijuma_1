@@ -73,6 +73,7 @@
                         <tbody>
 
                             <?php 
+                            if($rezultat->num_rows>0):
                              while ($red = $rezultat->fetch_array()) { ?>
                                 <tr>
                                     <td><?php echo $red["predmet"] ?></td>
@@ -86,10 +87,11 @@
                                         </label>
                                     </td>
                                 </tr>
-                            <?php } ?>
+                            <?php } else: ?>
                             <tr>
                                 <td colspan="5" class="text-center">Nema unetih kolokvijuma</td>
                             </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
 
@@ -175,32 +177,43 @@
     </div>
 
     <!-- Bootstrap and jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
 
+    
     <script>
-        // Omogućavanje dugmadi kada je selektovan radio button
-        $('input[name="id_predmeta"]').on('change', function() {
-            $('#btn-izmeni').prop('disabled', false);
-            $('#btn-obrisi').prop('disabled', false);
+    document.querySelectorAll('input[name="id_predmeta"]').forEach(radio => {     //prolazi se kroz svako input polje koje ima naziv=id_predmeta a to su radio dugmici
 
-            let selectedRow = $(this).closest('tr');
+        radio.addEventListener('change', function () {
 
-            let predmet = selectedRow.find('td:eq(0)').text();
-            let katedra = selectedRow.find('td:eq(1)').text();
-            let sala = selectedRow.find('td:eq(2)').text();
-            let datum = selectedRow.find('td:eq(3)').text();
+            // Omogući dugmad
+            document.getElementById('btn-izmeni').disabled = false;
+            document.getElementById('btn-obrisi').disabled = false;
 
-            let id = $(this).val();
+            // Pronađi <tr> (closest)
+            let selectedRow = this.closest('tr');
 
-            $('#id_predmeta').val(id);
-            $('#predmet').val(predmet);
-            $('#katedra').val(katedra);
-            $('#sala').val(sala);
-            $('#datum').val(datum);
+            // Uzmi vrednosti iz ćelija
+            let predmet = selectedRow.querySelector('td:nth-child(1)').textContent;
+            let katedra = selectedRow.querySelector('td:nth-child(2)').textContent;
+            let sala = selectedRow.querySelector('td:nth-child(3)').textContent;
+            let datum = selectedRow.querySelector('td:nth-child(4)').textContent;
+
+            // ID iz radio dugmeta
+            let id = this.value;
+
+            // Upis podataka u modal
+            document.getElementById('id_predmeta').value = id;
+            document.getElementById('predmet').value = predmet;
+            document.getElementById('katedra').value = katedra;
+            document.getElementById('sala').value = sala;
+            document.getElementById('datum').value = datum;
         });
+
+    });
     </script>
+
 </body>
 
 </html>
